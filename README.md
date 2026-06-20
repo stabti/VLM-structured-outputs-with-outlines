@@ -86,18 +86,32 @@ gitignored).
 
 ### Final numbers (n=20, temp 0.4)
 
-| Model            | Method         | Valid JSON | Valid schema |
-|------------------|----------------|------------|--------------|
-| VL-1.6B base     | without outlines | 20/20    | 18/20        |
-| VL-1.6B base     | with outlines    | 20/20    | **20/20**    |
-| VL-1.6B-Extract  | without outlines | 16/20    | **0/20**     |
-| VL-1.6B-Extract  | with outlines    | 19/20    | **19/20**    |
+Structural validity — does it parse, and pass the strict schema?
+
+| Model            | Method           | Valid JSON | Valid schema |
+|------------------|------------------|------------|--------------|
+| VL-1.6B base     | without outlines | 20/20      | 19/20        |
+| VL-1.6B base     | with outlines    | 20/20      | **20/20**    |
+| VL-1.6B-Extract  | without outlines | 13/20      | **0/20**     |
+| VL-1.6B-Extract  | with outlines    | 20/20      | **20/20**    |
+
+Field accuracy vs. ground truth — is each value actually *right*?
+
+| Model            | Method           | Store | Total | Time  | Date     |
+|------------------|------------------|-------|-------|-------|----------|
+| VL-1.6B base     | without outlines | 20/20 | 19/20 | 1/20  | 3/20     |
+| VL-1.6B base     | with outlines    | 20/20 | 20/20 | 4/20  | **5/20** |
+| VL-1.6B-Extract  | without outlines | 13/20 | 11/20 | 6/20  | **0/20** |
+| VL-1.6B-Extract  | with outlines    | 20/20 | 19/20 | 20/20 | **0/20** |
+
+The split between the two tables is the whole point: outlines takes schema validity to
+20/20, while the date is right at most 5 times in 20. Structure says nothing about correctness.
 
 ### Conclusions
 
-- **`outlines` guarantees structure, never correctness** — schema-valid by construction (the lone
-  19/20 was output truncated at the token cap, not a constraint failure); the unconstrained
-  baseline plateaus around 90%.
+- **`outlines` guarantees structure, never correctness** — 20/20 schema-valid in both configs, by
+  construction; the unconstrained baseline ranges from ~95% (base, 19/20) to total collapse
+  (Extract, 0/20). Yet across all of it the date is right at most 5/20 — structure is not accuracy.
 - **Constraints reshape errors, they don't remove them** — each tighter regex made hallucinations
   rarer but *more plausible-looking*, and so harder to catch.
 - **Validation-as-detector vs. constraint-as-mask** — a baseline schema failure is useful signal

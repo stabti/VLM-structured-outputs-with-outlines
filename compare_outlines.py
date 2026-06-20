@@ -28,6 +28,9 @@ image.load()
 N_RUNS = 20
 GEN_KWARGS = dict(max_new_tokens=256, do_sample=True, temperature=0.4)
 
+# Ground truth read off the receipt (Intermarché Montpellier) — same as compare_baml.py
+GT = {"store": "intermarch", "date": "05/01/2026", "time": "13:06:09", "total": 27.49}
+
 
 # %% Target structure (Pydantic) and the shared prompt
 class Item(BaseModel):
@@ -61,8 +64,12 @@ prompt = (
 
 
 def evaluate(raw_text: str) -> dict:
-    """Check a generated answer: is it valid JSON? does it match the schema?"""
-    result = {"raw": raw_text, "valid_json": False, "valid_schema": False, "parsed": None}
+    """Validity (JSON + strict schema) AND field-level accuracy vs ground truth."""
+    result = {
+        "raw": raw_text, "valid_json": False, "valid_schema": False, "parsed": None,
+        "store_ok": False, "date_ok": False, "time_ok": False, "total_ok": False,
+        "date_val": None,
+    }
     try:
         data = json.loads(raw_text)
         result["valid_json"] = True
@@ -74,6 +81,14 @@ def evaluate(raw_text: str) -> dict:
         result["valid_schema"] = True
     except ValidationError as e:
         result["schema_error"] = str(e)
+    # Accuracy is scored from the raw JSON values, independent of strict-schema validity
+    if isinstance(data, dict):
+        result["date_val"] = data.get("date")
+        result["store_ok"] = GT["store"] in (data.get("store_name") or "").lower()
+        result["date_ok"] = data.get("date") == GT["date"]
+        result["time_ok"] = data.get("time") == GT["time"]
+        tot = data.get("total_ttc")
+        result["total_ok"] = isinstance(tot, (int, float)) and abs(tot - GT["total"]) < 0.01
     return result
 
 
@@ -157,10 +172,14 @@ all_results = {model_id: run_model(model_id) for model_id in MODEL_IDS}
 
 # %% Comparison across models and methods
 def summarize(name: str, results: list[dict]) -> None:
-    n_json = sum(r["valid_json"] for r in results)
-    n_schema = sum(r["valid_schema"] for r in results)
-    avg_time = sum(r["time"] for r in results) / len(results)
-    print(f"  {name:<32} JSON {n_json:>2}/{len(results)}  schéma {n_schema:>2}/{len(results)}  ({avg_time:.1f}s/run)")
+    n = len(results)
+    g = lambda k: sum(r[k] for r in results)  # noqa: E731
+    avg_time = sum(r["time"] for r in results) / n
+    print(f"  {name:<28} valide: JSON {g('valid_json'):>2}/{n}  schéma {g('valid_schema'):>2}/{n}")
+    print(
+        f"  {'':<28} exact: magasin {g('store_ok'):>2}/{n}  date {g('date_ok'):>2}/{n}  "
+        f"heure {g('time_ok'):>2}/{n}  total {g('total_ok'):>2}/{n}   ({avg_time:.1f}s/run)"
+    )
 
 
 print("=" * 78)
