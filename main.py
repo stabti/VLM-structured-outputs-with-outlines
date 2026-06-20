@@ -1,3 +1,4 @@
+#%%
 from transformers import AutoProcessor, AutoModelForImageTextToText, TextStreamer
 from transformers.image_utils import load_image
 from urllib.parse import urlparse
@@ -21,20 +22,23 @@ model = AutoModelForImageTextToText.from_pretrained(
 )
 processor = AutoProcessor.from_pretrained(model_id)
 streamer = TextStreamer(processor, skip_prompt=True, skip_special_tokens=True)
-
+#%% 
 # Specify the image source (URL or local file path)
-image_source = "https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg"
-#image_source="ticket_caisse.jpeg"
+#image_source = "https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg"
+image_source="ticket_caisse.jpeg"
 
+# Load the image
+image = load_image_from_source(image_source)
 
+#%%
+
+# Prompts for testing
 prompt="décris cette image?"
 #prompt="what is in the image?"
 #prompt="est ce qu'il y a de l'eau sur cette image?"
 #prompt="Quel est le total TTC sur ce ticket de caisse?"
 #prompt="Quel est le magasin de ce ticket de caisse?"
 
-# Load the image
-image = load_image_from_source(image_source)
 
 # Create conversation
 conversation = [
@@ -56,3 +60,4 @@ inputs = processor.apply_chat_template(
     tokenize=True,
 ).to(model.device)
 outputs = model.generate(**inputs, max_new_tokens=64, streamer=streamer)
+#%%
