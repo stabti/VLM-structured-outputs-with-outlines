@@ -100,9 +100,23 @@ client<llm> CustomOllama {
     base_url "http://localhost:11434/v1"
     model "hf.co/LiquidAI/LFM2.5-VL-1.6B-GGUF:BF16"
     default_role "user" // Most local models prefer the user role
-    temperature 0.4     // mirror the sampling temperature of the outlines run
+    temperature 0       // greedy: mirrors the outlines run (one generation per image)
     max_tokens 512      // headroom so the JSON isn't truncated mid-object
     // No API key needed for local Ollama
+  }
+}
+
+// Same model served by vLLM (bf16 HF weights, OpenAI-compatible server), started from a
+// separate env (~/envs/vllm): `vllm serve LiquidAI/LFM2.5-VL-1.6B --max-model-len 8192
+// --max-num-batched-tokens 4096 --gpu-memory-utilization 0.6` with VLLM_USE_FLASHINFER_SAMPLER=0. Selected at call time by compare_baml.py (ENGINE="vllm").
+client<llm> CustomVllm {
+  provider openai-generic
+  options {
+    base_url "http://localhost:8000/v1"
+    model "LiquidAI/LFM2.5-VL-1.6B"
+    default_role "user"
+    temperature 0       // greedy, same as CustomOllama
+    max_tokens 512
   }
 }
 

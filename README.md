@@ -172,3 +172,27 @@ Same model, same receipt, same strict schema and ground truth — but the model 
   disambiguation, a tighter/higher-res image crop, a better vision frontend, or a bigger model.
   Structured-output tooling decides *what happens to a wrong value*; it never makes the value
   right.
+
+## Perspectives / future work
+
+The experiments above are the original single-receipt study. It has since been scaled to the
+SROIE test split (361 receipts, Wilson CIs, paired McNemar tests, energy and token logging —
+see `OBJECTIVE.md` for the running state). Ideas not done yet, roughly by value:
+
+- **Receipt-level accuracy** (all four fields right at once) — the metric a pipeline cares
+  about; computable from the saved results.
+- **Data contamination check** — SROIE has been public since 2019 and recent VLMs may have
+  seen it; re-test on a small private set of fresh receipts (including French ones).
+- **Perception experiment** — vary image resolution / zoom on the hard fields to test directly
+  that perception, not enforcement, is the bottleneck, and to find the real lever.
+- **Error taxonomy** — split residual errors into misreads, label conventions (rounding,
+  date + time) and label noise.
+- **Shop-clustered confidence intervals** — receipts of the same shop are not independent.
+- **Error detection** — the extractor's own token log-probabilities as a free confidence
+  baseline, against a decision model (Liquid's d1-2B) used as a yes/no judge on one field.
+- **Deployment realism** — 4-bit quantization, concurrent requests, VRAM footprint, load time.
+- **Sampling variance** — everything is greedy; repeat runs at temperature > 0 on a subset.
+- **Ecology** — cross-check the GPU energy counter with codecarbon; API-equivalent estimates
+  with ecologits.
+- **Reproducibility** — record library versions, hardware and commit in every results file.
+- **A larger reference model**, and an on-device agent demo as a stretch.

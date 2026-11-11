@@ -1,24 +1,19 @@
-// Mirrors the Pydantic `Receipt` from compare_outlines.py so the comparison is fair.
+// Mirrors the Pydantic `Receipt` from compare_outlines.py (the SROIE ground-truth keys)
+// so the comparison is fair — keep the field names, types and @description hints in sync.
 // Note: BAML does Schema-Aligned Parsing (model generates freely, BAML coerces the
 // output to this shape) — there is NO token-level masking here, unlike outlines.
-class Item {
-  name string
-  price float
-}
-
 class Receipt {
-  store_name string
-  date string?   // ground truth: 05/01/2026 — strict format checked in Python
-  time string?   // ground truth: 13:06:09
-  items Item[]
-  total_ttc float
+  company string @description("name of the store")
+  date string @description("purchase date as printed")
+  address string @description("full address of the store")
+  total float @description("total amount paid, without currency symbol")
 }
 
 function ExtractReceipt(receipt_img: image) -> Receipt {
   client CustomOllama
   prompt #"
     {{ _.role("user") }}
-    Extrais les informations de ce ticket de caisse.
+    Extract the information from this receipt.
     {{ receipt_img }}
 
     {{ ctx.output_format }}
