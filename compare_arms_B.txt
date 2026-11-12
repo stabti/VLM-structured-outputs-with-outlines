@@ -1,0 +1,140 @@
+vLLM free B 361
+vLLM guided B 361
+ollama format B 361
+HF base B 361
+HF outlines B 361
+HF base inline 361
+HF outlines inline 361
+vLLM free inline 361
+BAML vLLM 361
+BAML ollama 361
+HF Extract base B 361
+HF Extract outlines B 361
+HF Extract native base 361
+HF Extract native outlines 361
+
+vLLM guided B vs vLLM free B (n=361) [only-first, only-second, p]
+  company       (6, 0, 0.03125)
+  date          (0, 0, 1.0)
+  address       (1, 1, 1.0)
+  total         (1, 0, 1.0)
+  date_lenient  (1, 0, 1.0)
+
+vLLM free B vs HF base B (n=361) [only-first, only-second, p]
+  company       (4, 1, 0.375)
+  date          (3, 1, 0.625)
+  address       (0, 1, 1.0)
+  total         (0, 0, 1.0)
+  date_lenient  (0, 0, 1.0)
+
+vLLM guided B vs HF outlines B (n=361) [only-first, only-second, p]
+  company       (1, 0, 1.0)
+  date          (8, 4, 0.3876953125)
+  address       (11, 7, 0.480682373046875)
+  total         (0, 4, 0.125)
+  date_lenient  (1, 0, 1.0)
+
+ollama format B vs vLLM guided B (n=361) [only-first, only-second, p]
+  company       (4, 73, 1.891833529313699e-17)
+  date          (38, 23, 0.07217743850092258)
+  address       (13, 50, 3.015952084642337e-06)
+  total         (9, 20, 0.06142834573984146)
+  date_lenient  (2, 21, 6.604194641113281e-05)
+
+ollama format B vs HF outlines B (n=361) [only-first, only-second, p]
+  company       (4, 72, 3.589836803538052e-17)
+  date          (40, 21, 0.020414713799634897)
+  address       (14, 47, 2.719187682281854e-05)
+  total         (5, 20, 0.004077315330505371)
+  date_lenient  (2, 20, 0.00012111663818359375)
+
+HF base B vs HF base inline (n=361) [only-first, only-second, p]
+  company       (6, 8, 0.79052734375)
+  date          (38, 0, 7.275957614183426e-12)
+  address       (95, 5, 1.252324512538536e-22)
+  total         (9, 7, 0.803619384765625)
+  date_lenient  (2, 1, 1.0)
+
+HF outlines B vs HF outlines inline (n=361) [only-first, only-second, p]
+  company       (7, 1, 0.0703125)
+  date          (36, 0, 2.9103830456733704e-11)
+  address       (89, 4, 6.167247409177618e-22)
+  total         (11, 4, 0.11846923828125)
+  date_lenient  (1, 0, 1.0)
+
+vLLM free B vs vLLM free inline (n=361) [only-first, only-second, p]
+  company       (8, 7, 1.0)
+  date          (42, 1, 1.000444171950221e-11)
+  address       (94, 4, 2.378717289651507e-23)
+  total         (9, 7, 0.803619384765625)
+  date_lenient  (2, 1, 1.0)
+
+BAML vLLM vs vLLM free B (n=361) [only-first, only-second, p]
+  company       (8, 4, 0.3876953125)
+  date          (7, 3, 0.34375)
+  address       (3, 9, 0.14599609375)
+  total         (3, 7, 0.34375)
+  date_lenient  (1, 4, 0.375)
+
+BAML vLLM vs vLLM guided B (n=361) [only-first, only-second, p]
+  company       (2, 4, 0.6875)
+  date          (7, 3, 0.34375)
+  address       (3, 9, 0.14599609375)
+  total         (2, 7, 0.1796875)
+  date_lenient  (0, 4, 0.125)
+
+BAML vLLM vs HF outlines B (n=361) [only-first, only-second, p]
+  company       (3, 4, 1.0)
+  date          (12, 4, 0.076812744140625)
+  address       (8, 10, 0.8145294189453125)
+  total         (2, 11, 0.0224609375)
+  date_lenient  (0, 3, 0.25)
+
+BAML ollama vs ollama format B (n=361) [only-first, only-second, p]
+  company       (58, 36, 0.029766410087911834)
+  date          (24, 42, 0.03558272445223169)
+  address       (38, 44, 0.5811144541766469)
+  total         (9, 34, 0.00017015517460094998)
+  date_lenient  (7, 30, 0.00019107642583549023)
+
+BAML ollama vs BAML vLLM (n=361) [only-first, only-second, p]
+  company       (4, 49, 7.053979622639872e-11)
+  date          (33, 40, 0.4827885568440213)
+  address       (9, 46, 4.336383137015787e-07)
+  total         (9, 40, 9.263546409954415e-06)
+  date_lenient  (2, 40, 4.1109160520136356e-10)
+
+HF Extract outlines B vs HF Extract base B (n=361) [only-first, only-second, p]
+  company       (240, 5, 2.550117333197226e-64)
+  date          (268, 2, 3.856968539510319e-77)
+  address       (228, 2, 3.0793365812238136e-65)
+  total         (218, 4, 2.976731674984496e-59)
+  date_lenient  (292, 2, 2.7249631643660955e-84)
+
+HF Extract outlines B vs HF outlines B (n=361) [only-first, only-second, p]
+  company       (5, 40, 7.878384167270269e-08)
+  date          (77, 5, 1.2046380153120002e-17)
+  address       (20, 53, 0.0001416370725355272)
+  total         (4, 78, 7.614296800224126e-19)
+  date_lenient  (4, 5, 1.0)
+
+HF Extract native base vs HF Extract base B (n=361) [only-first, only-second, p]
+  company       (248, 5, 1.1704874643916681e-66)
+  date          (241, 5, 1.3013992264949714e-64)
+  address       (223, 2, 9.431027558737838e-64)
+  total         (200, 4, 5.5597870010725e-54)
+  date_lenient  (292, 1, 3.694780105721681e-86)
+
+HF Extract native outlines vs HF Extract outlines B (n=361) [only-first, only-second, p]
+  company       (21, 13, 0.22948101302608848)
+  date          (3, 32, 4.176981747150421e-07)
+  address       (17, 22, 0.5223973804968409)
+  total         (16, 34, 0.015346677832630107)
+  date_lenient  (3, 1, 0.625)
+
+HF Extract native outlines vs HF outlines B (n=361) [only-first, only-second, p]
+  company       (2, 29, 4.628673195838928e-07)
+  date          (49, 6, 1.822834494458192e-09)
+  address       (17, 55, 8.14003082672391e-06)
+  total         (4, 96, 6.449688895763542e-24)
+  date_lenient  (3, 2, 1.0)

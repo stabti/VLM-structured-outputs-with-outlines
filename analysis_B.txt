@@ -1,0 +1,64 @@
+{'HF free': 361, 'HF outlines': 361, 'vLLM free': 361, 'vLLM guided': 361, 'ollama format': 361, 'BAML vLLM': 361, 'BAML ollama': 361, 'Qwen free': 361, 'Qwen outlines': 361}
+361 receipts, 153 distinct shops (cluster = GT company)
+
+RECEIPT-LEVEL accuracy (all 4 fields right at once): Wilson CI | shop-clustered bootstrap CI
+  HF free       date strict  191/361 = 53% [48-58]   | boot 53% [38%-65%]
+  HF free       date lenient 263/361 = 73% [68-77]   | boot 73% [64%-80%]
+  HF outlines   date strict  193/361 = 53% [48-59]   | boot 53% [40%-64%]
+  HF outlines   date lenient 265/361 = 73% [69-78]   | boot 73% [64%-80%]
+  vLLM free     date strict  191/361 = 53% [48-58]   | boot 53% [39%-65%]
+  vLLM free     date lenient 264/361 = 73% [68-77]   | boot 73% [64%-80%]
+  vLLM guided   date strict  195/361 = 54% [49-59]   | boot 54% [40%-66%]
+  vLLM guided   date lenient 268/361 = 74% [69-78]   | boot 74% [66%-81%]
+  ollama format date strict  147/361 = 41% [36-46]   | boot 41% [29%-50%]
+  ollama format date lenient 193/361 = 53% [48-59]   | boot 53% [43%-62%]
+  BAML vLLM     date strict  192/361 = 53% [48-58]   | boot 53% [39%-64%]
+  BAML vLLM     date lenient 257/361 = 71% [66-76]   | boot 71% [62%-78%]
+  BAML ollama   date strict  175/361 = 48% [43-54]   | boot 48% [38%-59%]
+  BAML ollama   date lenient 218/361 = 60% [55-65]   | boot 60% [50%-70%]
+  Qwen free     date strict  255/361 = 71% [66-75]   | boot 71% [61%-79%]
+  Qwen free     date lenient 256/361 = 71% [66-75]   | boot 71% [62%-78%]
+  Qwen outlines date strict  244/361 = 68% [63-72]   | boot 68% [57%-76%]
+  Qwen outlines date lenient 245/361 = 68% [63-72]   | boot 68% [58%-76%]
+
+PER-FIELD accuracy with shop-clustered bootstrap CI (vs Wilson in the other scripts)
+  HF free       company 90%[85%-94%]  date 69%[57%-80%]  address 89%[84%-93%]  total 92%[88%-95%]  date_le 97%[95%-99%]
+  HF outlines   company 92%[88%-95%]  date 69%[56%-78%]  address 88%[83%-92%]  total 93%[90%-96%]  date_le 97%[94%-99%]
+  vLLM free     company 91%[86%-94%]  date 70%[57%-80%]  address 89%[84%-93%]  total 92%[88%-95%]  date_le 97%[95%-99%]
+  vLLM guided   company 93%[88%-96%]  date 70%[57%-80%]  address 89%[84%-93%]  total 92%[88%-95%]  date_le 97%[95%-99%]
+  ollama format company 73%[65%-80%]  date 74%[64%-82%]  address 79%[69%-86%]  total 89%[85%-93%]  date_le 92%[88%-95%]
+  BAML vLLM     company 92%[87%-95%]  date 71%[58%-80%]  address 88%[82%-92%]  total 91%[86%-94%]  date_le 96%[93%-98%]
+  BAML ollama   company 80%[70%-87%]  date 69%[58%-79%]  address 77%[68%-85%]  total 82%[72%-90%]  date_le 86%[76%-93%]
+  Qwen free     company 82%[74%-88%]  date 98%[95%-99%]  address 91%[85%-96%]  total 94%[90%-98%]  date_le 98%[96%-99%]
+  Qwen outlines company 81%[73%-88%]  date 97%[94%-99%]  address 88%[80%-94%]  total 95%[90%-98%]  date_le 98%[96%-99%]
+
+PAIRED difference (first minus second, points) with shop-clustered bootstrap CI; * = CI excludes 0
+  vLLM guided − vLLM free:  company +1.7[+0.3,+3.5]*  date +0.0[+0.0,+0.0]  address +0.0[-0.9,+0.8]  total +0.3[+0.0,+1.0]  date_le +0.3[+0.0,+1.0]
+  HF outlines − HF free:  company +2.2[+0.8,+4.2]*  date -0.6[-2.5,+1.1]  address -1.4[-3.8,+1.2]  total +1.4[+0.2,+3.1]*  date_le +0.0[-0.8,+0.8]
+  Qwen outlines − Qwen free:  company -0.6[-2.2,+0.7]  date -0.6[-1.9,+0.5]  address -3.0[-6.6,-0.4]*  total +0.3[-0.6,+1.2]  date_le +0.3[+0.0,+0.8]
+  vLLM free − HF free:  company +0.8[-0.3,+2.2]  date +0.6[-0.4,+1.8]  address -0.3[-1.0,+0.0]  total +0.0[+0.0,+0.0]  date_le +0.0[+0.0,+0.0]
+  ollama format − vLLM guided:  company -19.1[-26.7,-12.6]*  date +4.2[-1.4,+10.7]  address -10.2[-19.1,-3.3]*  total -3.0[-6.6,+0.3]  date_le -5.3[-8.1,-2.7]*
+  BAML vLLM − vLLM free:  company +1.1[-0.9,+3.3]  date +1.1[-0.5,+3.1]  address -1.7[-3.8,+0.0]  total -1.1[-3.0,+0.5]  date_le -0.8[-2.2,+0.3]
+  BAML ollama − ollama format:  company +6.1[-6.9,+17.0]  date -5.0[-14.1,+2.9]  address -1.7[-14.0,+10.4]  total -6.9[-14.3,-1.0]*  date_le -6.4[-14.3,-0.6]*
+
+ERROR TAXONOMY of strict failures (GT present), per arm and field
+  vLLM free
+    company   33 fails: different text (<0.6) 24; truncated (part of GT) 4; near miss (0.6-0.9 similar) 3; contains GT + extra text 2
+    date     109 fails: right date + extra text (time…) 98; wrong/other date 10; missing 1
+    address   39 fails: contains GT + extra text 19; near miss (0.6-0.9 similar) 11; truncated (part of GT) 7; different text (<0.6) 2
+    total     30 fails: wrong value (right order of magnitude) 27; wrong value (far off) 2; missing 1
+  vLLM guided
+    company   27 fails: different text (<0.6) 18; truncated (part of GT) 4; near miss (0.6-0.9 similar) 3; contains GT + extra text 2
+    date     109 fails: right date + extra text (time…) 99; wrong/other date 10
+    address   39 fails: contains GT + extra text 20; near miss (0.6-0.9 similar) 9; truncated (part of GT) 7; different text (<0.6) 3
+    total     29 fails: wrong value (right order of magnitude) 27; wrong value (far off) 2
+  ollama format
+    company   96 fails: contains GT + extra text 64; different text (<0.6) 19; near miss (0.6-0.9 similar) 8; truncated (part of GT) 4; missing 1
+    date      94 fails: right date + extra text (time…) 65; wrong/other date 28; missing 1
+    address   76 fails: contains GT + extra text 27; near miss (0.6-0.9 similar) 26; truncated (part of GT) 14; different text (<0.6) 8; missing 1
+    total     40 fails: wrong value (right order of magnitude) 37; wrong value (far off) 2; missing 1
+  BAML vLLM
+    company   29 fails: different text (<0.6) 19; truncated (part of GT) 5; near miss (0.6-0.9 similar) 3; contains GT + extra text 2
+    date     105 fails: right date + extra text (time…) 91; wrong/other date 14
+    address   45 fails: contains GT + extra text 24; near miss (0.6-0.9 similar) 9; truncated (part of GT) 8; different text (<0.6) 4
+    total     34 fails: wrong value (right order of magnitude) 32; wrong value (far off) 2

@@ -32,7 +32,8 @@ MODEL_IDS = [
     "LiquidAI/LFM2.5-VL-1.6B",
     "Qwen/Qwen3-VL-2B-Instruct",
     "HuggingFaceTB/SmolVLM2-2.2B-Instruct",
-    # Extract is not in the v2 (English) run: its native English prompt was run in v1 as
+    "LiquidAI/LFM2.5-VL-1.6B-Extract",  # prompt B (added after the 3 above, v3); resumes, so only this model runs
+    # Extract's native-prompt run is not in the v2 (English) run: its native English prompt was run in v1 as
     # "LiquidAI/LFM2.5-VL-1.6B-Extract#native" (system-turn YAML field list, image-only user turn);
     # re-add that label here to rerun it.
 ]

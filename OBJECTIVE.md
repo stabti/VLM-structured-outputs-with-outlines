@@ -723,6 +723,26 @@ Statistical note: at N=361, Wilson 95% half-width ≈ ±0.05 (worst case p=0.5).
   - Headline still holds: enforcement fixes structure for models that break format and is neutral for those
     that don't; it never lifts accuracy above what the model perceives; prompt format and (for ollama) engine move
     accuracy far more than enforcement does.
+- **EXTRACT on prompt B + BAML pairs + clustered analyses (2026-11-12).** Files: `results_outlines_v3` (Extract added),
+  `compare_arms_B.txt`, `analysis_B.txt` (from `analyze_results.py`: receipt-level accuracy, shop-clustered bootstrap CIs, error taxonomy).
+  - Extract, prompt B: free 24% valid JSON / 12% schema, acc 17/15/16/13 (lenient date 16); + outlines 99% valid, 83/89/79/73 (date lenient 97).
+    Extract, native prompt: free 85/80/78/68 (97) = outlines 85/81/78/68 (97) → free == guided once the prompt is right (as the user expected).
+    Native outlines vs base+outlines B: company 2/29, address 17/55, total 4/96 (p<1e-5): Extract is worse than the base model
+    except strict date (49/6, it does not append the time); lenient date equal.
+  - BAML vs prompt-B arms (vLLM): BAML vLLM vs vLLM free/guided: all ns (p≥0.15); vs HF outlines: total 2/11 p=0.02, rest ns
+    → BAML (SAP) ≈ free ≈ guided on the same engine. BAML ollama vs BAML vLLM: company 4/49, address 9/46, total 9/40, lenient date 2/40
+    (all p<1e-5): the ollama accuracy loss shows up under BAML too (engine, not enforcement). BAML ollama vs ollama+format:
+    BAML better on company (58/36 p=0.03), `format` better on total (9/34) and lenient date (7/30) (p<2e-4) → on ollama, masking
+    helps total/date, hurts company.
+  - Shop-clustered bootstrap (153 shops, 361 receipts): conclusions survive. Significant: vLLM guided−free company +1.8 [0.3,3.6];
+    HF outlines−free company +2.4 [0.8,4.4]; Qwen outlines−free address −3.2 [−6.7,−0.4]; ollama−vLLM guided company −19.8 [−27,−13],
+    address −9.1 [−17,−2], lenient date −5.3 [−8,−2.5]. Everything else CI includes 0 (HF vs vLLM free: no engine effect).
+  - Receipt-level (all 4 fields right): LFM HF/vLLM ≈ 53% strict date / 73% lenient date (bootstrap CI ±12/±9), ollama+format 42/55,
+    BAML ollama 49/61, Qwen 70/71 (Qwen > LFM when strict date counts, ≈ when lenient).
+  - Error taxonomy (vLLM free): date fails 103 = 92 right date + extra text, 10 wrong, 1 missing; total fails 26 = 23 wrong value of
+    right magnitude (other amount on the receipt), 2 far off, 1 missing; company 30 = 22 different text, 4 truncated, 2 near miss, 2 contains+extra;
+    address 37 = 17 contains GT + extra, 11 near miss, 7 truncated, 2 different. ollama+format company fails 91 = 61 "contains GT + extra text".
+  - README rewritten to the scaled study (2026-11-12). Next: resolution/perception study.
 - **SIDE QUEST (future, not for the talk): why is ollama/llama.cpp less accurate than vLLM for the same
   model?** Observed (prompt B, 361 receipts): ollama+`format` company 73 / address 79 / lenient date 92 vs
   vLLM guided 93 / 89 / 97, and BAML on ollama is also lower, so it is neither the prompt nor the masking.

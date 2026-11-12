@@ -24,6 +24,7 @@ uv run main.py            # single end-to-end generation (smoke test)
 uv run compare_baml.py    # Family B (needs ollama running, see below)
 uv run sroie.py           # SROIE loader/normalizer self-checks (+ GT-only smoke print)
 uv run stats.py           # Wilson / McNemar self-checks
+uv run analyze_results.py  # receipt-level acc, shop-clustered CIs, error taxonomy
 uv run compare_arms.py     # paired McNemar tests between saved result arms (no model calls)
 ```
 
@@ -91,7 +92,7 @@ ENGINE=vllm uv run compare_baml.py
 BACKEND=xgrammar uv run compare_vllm_guided.py   # FULL=1 for all 361; restart server with `outlines`, BACKEND=outlines for the 2nd run
 ```
 # Same script against ollama (native /api/chat `format` = Pydantic JSON schema, llama.cpp grammar; guided only, ~2.5 h):
-ENGINE=ollama uv run compare_vllm_guided.py   # results_ollama_format_v1.jsonl; vLLM server must be stopped
+ENGINE=ollama uv run compare_vllm_guided.py   # results_ollama_format_v2.jsonl (prompt B); vLLM server must be stopped
 Never `pkill -f` and start the server in the same Bash call (the pattern matches the call's own
 command line and kills the shell): stop in one call, start in the next.
 The vLLM server holds ~4.7 GB of the 8 GiB GPU: stop it before running any HF/outlines
@@ -111,7 +112,7 @@ cell. The FlashInfer sampler must stay off (no `nvcc` on this machine).
 
 When touching the experiments, these are coupled by design:
 - The schema — SROIE ground-truth keys `company: str, date: str, address: str,
-  total: float` — plus the French field hints in the prompt / BAML `@description` is
+  total: float` — plus the English field hints in the prompt / BAML `@description` (prompt B: commented schema block, see compare_outlines.py) is
   duplicated across `compare_outlines.py`, `compare_baml.py`, and
   `baml_src/receipt.baml`. It is deliberately loose on value format (no date regex):
   normalization lives in the scorer. `total` is a number on purpose — a `str` total made
@@ -130,5 +131,5 @@ When touching the experiments, these are coupled by design:
 ## Notes
 
 - `utils.py` (`draw_bboxes`) is gitignored adjacent tooling, not part of the study.
-- Prompts and console output are in **French** (the receipt and audience are
-  French) — match that when editing user-facing strings in the experiments.
+- Prompts are in **English** since 2026-11-11 (French was v1; kept in the old results files). Console
+  output of the scripts is still French.
