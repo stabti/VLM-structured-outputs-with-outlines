@@ -18,6 +18,7 @@ import time
 from itertools import islice
 
 import requests
+from PIL import Image
 from pydantic import BaseModel, ValidationError
 
 from energy import gpu_energy_j
@@ -53,8 +54,15 @@ VARIANT = os.environ.get("PROMPT_VARIANT", "B")
 if VARIANT in ("A", "C"):
     assert ENGINE == "vllm", "variants A/C: vLLM only"
     METHODS = (f"free-{VARIANT}",)
+# RES=<px>|native (vLLM, free, prompt B): resolution study. Long side is downscaled to <px> (never upscaled)
+# BEFORE sending; "native" = untouched (the processor still tiles/caps it). Own results file.
+RES = os.environ.get("RES")
+if RES:
+    assert ENGINE == "vllm" and VARIANT == "B", "RES: vLLM + prompt B only"
+    METHODS = (f"free-B-res{RES}",)
+    RESULTS_PREFIX = "results_resolution"
 GUIDED = METHODS[-1]
-TAG = "v2" if VARIANT == "B" else "v1"
+TAG = "v2" if VARIANT == "B" and not RES else "v1"
 RESULTS = f"{RESULTS_PREFIX}_{TAG}.jsonl"
 KEYS = load_split(SPLIT)["key"][:N_IMAGES]
 
@@ -157,6 +165,9 @@ def png_data_url(pil_image) -> str:
 
 def generate(image, guided: bool) -> tuple[str, int, int]:
     """(text, input_tokens, output_tokens) from one greedy chat completion."""
+    if RES and RES != "native" and max(image.size) > int(RES):
+        r = int(RES) / max(image.size)
+        image = image.resize((max(1, round(image.width * r)), max(1, round(image.height * r))), Image.LANCZOS)
     if ENGINE == "ollama":  # native /api/chat, exactly what ollama.chat(..., format=schema) sends
         buf = io.BytesIO()
         image.save(buf, format="PNG")
@@ -194,7 +205,7 @@ for n, (key, image, gt) in enumerate(islice(iter_samples(SPLIT), N_IMAGES), 1):
         e0, t0 = gpu_energy_j(), time.perf_counter()
         error, text, n_in, n_out = None, "", None, None
         try:
-            text, n_in, n_out = generate(image, guided=method != "free")
+            text, n_in, n_out = generate(image, guided=method.startswith("guided"))
         except Exception as e:
             error = f"{type(e).__name__}: {str(e)[:400]}"
         elapsed, energy_j = time.perf_counter() - t0, gpu_energy_j() - e0

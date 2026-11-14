@@ -84,7 +84,12 @@ company, address and total (e.g. total 68 vs 93), better only on the strict date
 the time); lenient date is the same (97). The native-prompt run used the earlier English
 protocol (outlines v1 file); the numbers are not affected by the later prompt changes.
 
-### Prompt variants (vLLM, free, 361 receipts)
+### Prompt variants (vLLM, 361 receipts)
+
+Caveat: these three variant runs were accidentally executed with the schema *enforced* (a
+labelling bug, fixed 2026-11-14), not free. For this model guided and free are identical
+(0 to 1 discordant receipts on date/address), and the same prompt effect is measured on truly
+free runs (HF baseline, vLLM free: inline vs prompt B), so the conclusion stands.
 
 | Prompt | company | date strict | address | total |
 |---|---|---|---|---|
@@ -130,7 +135,6 @@ Without `FULL=1` the scripts run a 5-receipt smoke test. Every generation is app
 `results_<arm>_<TAG>.jsonl` and reruns resume; the tag changes when the prompt or settings change,
 so protocols never mix (outlines: v1 French prompt, v2 inline English prompt, v3 prompt B;
 vLLM guided / ollama format: v1 inline prompt, v2 prompt B). Old results are kept.
-`OBJECTIVE.md` is the running lab notebook (decisions, every result, caveats).
 
 ## Files
 
@@ -151,7 +155,7 @@ vLLM guided / ollama format: v1 inline prompt, v2 prompt B). Old results are kep
 - SROIE is public since 2019 and models may have seen it; ground truth has label noise.
 - Accuracy depends on the prompt, and the prompt was not tuned per model (Qwen and SmolVLM2
   are very likely under-prompted). The `-Extract` model needs its native prompt (a YAML field
-  list in the system turn), see `OBJECTIVE.md`.
+  list in the system turn).
 - Early arms used a French prompt; the English reruns replace them in the tables above.
 
 ## Future work

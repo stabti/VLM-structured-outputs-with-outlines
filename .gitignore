@@ -17,3 +17,5 @@ utils.py
 
 # BAML generated client — regenerate with: uv run baml-cli generate
 baml_client/
+# Personal running notes (kept local)
+OBJECTIVE.md
