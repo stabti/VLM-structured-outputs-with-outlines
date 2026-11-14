@@ -62,7 +62,7 @@ if RES:
     METHODS = (f"free-B-res{RES}",)
     RESULTS_PREFIX = "results_resolution"
 GUIDED = METHODS[-1]
-TAG = "v2" if VARIANT == "B" and not RES else "v1"
+TAG = "v1" if RES else "v2" if VARIANT == "B" else "v3"  # v1 of free-A/B/C ran guided by mistake: truly free reruns go to v3
 RESULTS = f"{RESULTS_PREFIX}_{TAG}.jsonl"
 KEYS = load_split(SPLIT)["key"][:N_IMAGES]
 

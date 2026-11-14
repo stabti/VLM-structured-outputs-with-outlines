@@ -86,10 +86,9 @@ protocol (outlines v1 file); the numbers are not affected by the later prompt ch
 
 ### Prompt variants (vLLM, 361 receipts)
 
-Caveat: these three variant runs were accidentally executed with the schema *enforced* (a
-labelling bug, fixed 2026-11-14), not free. For this model guided and free are identical
-(0 to 1 discordant receipts on date/address), and the same prompt effect is measured on truly
-free runs (HF baseline, vLLM free: inline vs prompt B), so the conclusion stands.
+Note: the first A/B/C runs were accidentally executed with the schema enforced (a labelling bug,
+fixed 2026-11-14). A and C were re-run truly free (`results_vllm_guided_v3.jsonl`): results are
+identical on all 361 receipts. B is the vLLM free arm of the main table (always truly free).
 
 | Prompt | company | date strict | address | total |
 |---|---|---|---|---|
